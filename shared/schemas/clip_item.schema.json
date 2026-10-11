@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClipBridge clipboard item v1",
+  "type": "object",
+  "required": ["v", "id", "origin", "seq", "lamport", "created", "kind", "mime", "size", "sha256"],
+  "properties": {
+    "v": {"const": 1},
+    "id": {"type": "string", "format": "uuid"},
+    "origin": {"type": "string", "format": "uuid"},
+    "seq": {"type": "integer", "minimum": 0},
+    "lamport": {"type": "integer", "minimum": 0},
+    "created": {"type": "number"},
+    "kind": {"enum": ["text", "url", "html", "image", "file"]},
+    "mime": {"type": "string", "maxLength": 100},
+    "size": {"type": "integer", "minimum": 0, "maximum": 26214400},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "text": {"type": "string"},
+    "transfer_id": {"type": "string"}
+  }
+}

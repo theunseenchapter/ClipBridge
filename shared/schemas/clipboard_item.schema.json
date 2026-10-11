@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClipBridge clipboard item",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "item_id",
+    "origin_device_id",
+    "origin_seq",
+    "logical_clock",
+    "created_at",
+    "content_type",
+    "mime_type",
+    "content_size",
+    "sha256",
+    "transfer_id"
+  ],
+  "properties": {
+    "protocol_version": { "type": "integer", "minimum": 1 },
+    "item_id": { "type": "string", "minLength": 1 },
+    "origin_device_id": { "type": "string", "minLength": 1 },
+    "origin_seq": { "type": "integer", "minimum": 0 },
+    "logical_clock": { "type": "integer", "minimum": 0 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "content_type": { "type": "string", "minLength": 1 },
+    "mime_type": { "type": "string", "minLength": 1 },
+    "content_size": { "type": "integer", "minimum": 0 },
+    "sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "transfer_id": { "type": ["string", "null"] },
+    "payload": { "type": ["string", "null"] }
+  },
+  "additionalProperties": true
+}

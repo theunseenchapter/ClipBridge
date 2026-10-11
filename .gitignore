@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Windows build output and local data
+windows-agent/build/
+windows-agent/dist/
+windows-agent/*.spec
+windows-agent/clipbridge-data/
+windows-agent/.eggs/
+
+# Android/Gradle
+android-app/.gradle/
+android-app/build/
+android-app/app/build/
+android-app/local.properties
+android-app/gradle.properties.local
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Project-generated release output
+release/
+
+# Local test/runtime files
+tests/.tmp_*.db
+*.log
+*.tmp
+
+# IDE and operating-system files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
