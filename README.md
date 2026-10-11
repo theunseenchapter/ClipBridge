@@ -31,19 +31,16 @@ protocol fields are reserved and currently report `unsupported`.
 ### Windows
 
 - Windows 10 or Windows 11.
-- Python 3.11 or newer with Tcl/Tk installed.
 - A Private network profile for the Wi-Fi connection.
-- Administrator access for the one-time firewall rule.
+- Administrator access only if Windows Firewall asks for a rule.
 
 ### Android
 
 - Android 8.0 (API 26) or newer.
-- Android SDK Platform 34 and Build Tools.
-- JDK 17 for building.
-- Android SDK Platform-Tools (`adb`) for USB installation.
 - Both devices on the same Wi-Fi network.
 
-Android Studio is not required.
+End users do not need Python, Android Studio, the Android SDK, Java, Gradle,
+or ADB. Those tools are only needed to build ClipBridge from source.
 
 ## Run on Windows from source
 
@@ -78,7 +75,47 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 Keep this PowerShell window open while the agent is running. Press `Ctrl+C` to
 stop it. The ClipBridge tray icon appears near the Windows clock.
 
+## React Native Windows dashboard
+
+The polished Windows dashboard is in [`ClipBridgeWindows`](ClipBridgeWindows).
+The Python process remains the background sync and tray service; the dashboard
+controls it through a loopback-only API on port `48501`.
+
+To run the dashboard during development, keep the Python agent running in one
+PowerShell window, then use another PowerShell window with the required
+Visual Studio Windows/UWP workload:
+
+```powershell
+cd D:\ClipBridge\ClipBridgeWindows
+npm install
+npm run windows
+```
+
+The dashboard supports connection status, pairing, pause/resume, and device
+disconnect. The portable release EXE still includes the tray service and its
+fallback pairing window; packaging the React Native dashboard as a separate
+signed Windows app is a developer build step until a Windows installer is
+added.
+
+## Browser dashboard and Tkinter windows
+
+The portable Windows build provides both interfaces:
+
+- A browser dashboard opens automatically at
+  `http://127.0.0.1:48501/dashboard`.
+- The native Tkinter pairing and history windows remain available from the
+  tray menu.
+- Use **Open web dashboard**, **Pair new phone**, or **History** in the tray
+  menu to open either interface.
+
+The browser dashboard only listens on localhost and is not exposed to other
+devices on the network.
+
 ## Run Android without Android Studio
+
+This section is for developers building the project from source. If you only
+want to use ClipBridge, download the APK from a release and follow
+[Private distribution](#private-distribution).
 
 Set the command-line tool paths for the current PowerShell session. Replace
 the paths if your installations are different:
@@ -146,16 +183,38 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\scripts\package-release.ps1
 ```
 
+If PowerShell blocks `.ps1` files on your machine, use the wrapper instead:
+
+```powershell
+.\scripts\package-release.cmd
+```
+
 The script creates:
 
 ```text
 release\ClipBridge-Windows.exe
 release\ClipBridge-Android.apk
+release\INSTALL.txt
 ```
 
-Windows users can run the EXE. Android users can open the APK after enabling
-**Install unknown apps** for their browser or file manager. The generated
-`release` folder is intentionally ignored by Git.
+Windows users can copy the EXE anywhere and run it directly; Python is not
+required. Android users can copy the APK to their phone, open it, allow
+**Install unknown apps** for the app that opened the file, and then launch
+ClipBridge. No USB cable, Android Studio, SDK, or ADB is required.
+
+The APK produced by this private distribution script is signed with Gradle's
+debug key so it is directly installable. Keep the same signing key when
+shipping updates to the same users. For a public production release, configure
+a private release keystore instead of sharing a debug-signed APK.
+
+To also create a convenient ZIP containing the EXE, APK, and installation
+instructions:
+
+```powershell
+.\scripts\package-release.ps1 -CreateZip
+```
+
+The generated `release` folder is intentionally ignored by Git.
 
 To build only one platform:
 
@@ -214,6 +273,7 @@ scripts\           Setup, run, firewall, build, and packaging scripts
 shared\            Shared schemas
 tests\             Windows and protocol tests
 windows-agent\     Windows tray agent and sync engine
+ClipBridgeWindows\ React Native for Windows dashboard
 ```
 
 ## License

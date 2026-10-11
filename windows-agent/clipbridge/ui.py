@@ -137,3 +137,20 @@ class UI:
         qv.trace_add("write", refresh)
         lb.bind("<Double-Button-1>", lambda e: act(lambda r: self.eng().restore(r["id"]))())
         refresh()
+
+    def confirm_disconnect(self) -> None:
+        eng = self.eng()
+        devices = eng.devices.active_ids()
+        if not devices:
+            self.toast("ClipBridge", "No paired phone to disconnect.")
+            return
+        confirmed = ctypes.windll.user32.MessageBoxW(
+            0,
+            "Disconnect the paired phone?\nYou will need to scan a new QR code to reconnect.",
+            "ClipBridge",
+            0x24 | 0x40000) == 6
+        if not confirmed:
+            return
+        for device_id in devices:
+            eng.revoke(device_id)
+        self.toast("ClipBridge", "Phone disconnected.")

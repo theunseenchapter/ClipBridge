@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: #f7f7f5;
+  color: #202124;
+  --muted: #747780;
+  --line: #e8e8e4;
+  --blue: #4779d8;
+  --green: #43845c;
+  --amber: #a87329;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 620px; background: #f7f7f5; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.shell { width: min(920px, calc(100% - 64px)); margin: 0 auto; padding: 28px 0 24px; }
+.topbar, .brand, .topbarRight, .sectionHeading, .connectionPanel, .connectionActions, .device, .deviceActions, .historyTools { display: flex; align-items: center; }
+.topbar, .sectionHeading { justify-content: space-between; }
+.brand { gap: 10px; }
+.brandMark { width: 25px; height: 25px; border: 1px solid #b9c8e5; border-radius: 7px; display: flex; align-items: center; justify-content: center; gap: 2px; background: #edf2fb; }
+.brandMark span { display: block; width: 3px; border-radius: 2px; background: var(--blue); transform: skew(-20deg); }
+.brandMark span:first-child { height: 10px; opacity: .65; }.brandMark span:last-child { height: 15px; }
+h1 { font-size: 16px; line-height: 1; margin: 0; letter-spacing: -.2px; font-weight: 650; }
+h2 { font-size: 20px; line-height: 1.2; margin: 6px 0 5px; letter-spacing: -.3px; font-weight: 650; }
+h3 { font-size: 15px; line-height: 1.2; margin: 3px 0 0; font-weight: 650; }
+.topbarRight { gap: 14px; }
+.statusText { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px; }
+.statusText span { width: 7px; height: 7px; border-radius: 50%; background: #c99a55; }
+.statusText.connected { color: var(--green); }.statusText.connected span { background: #5c9b70; }
+.iconButton { width: 28px; height: 28px; padding: 0 0 7px; border: 0; border-radius: 6px; background: transparent; color: #8b8e94; font-size: 15px; letter-spacing: 1px; }
+.iconButton:hover { background: #ecece8; color: #202124; }
+.connectionPanel { justify-content: space-between; margin-top: 42px; padding: 22px 0 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.sectionLabel { color: #8a8c91; font-size: 11px; font-weight: 650; margin: 0; }
+.connectionPanel p:not(.sectionLabel) { color: var(--muted); font-size: 13px; margin: 0; }
+.connectionActions { gap: 20px; }
+.phoneOutline { width: 17px; height: 27px; border: 1px solid #adb0b5; border-radius: 5px; position: relative; }
+.phoneOutline:after { content: ""; width: 3px; height: 3px; border-radius: 50%; background: #adb0b5; position: absolute; bottom: 3px; left: 6px; }
+.primary, .secondary { border-radius: 8px; padding: 9px 13px; font-size: 12px; font-weight: 600; }
+.primary { color: #fff; background: var(--blue); border: 1px solid var(--blue); }
+.primary:hover { background: #3d6dc2; border-color: #3d6dc2; }.primary:active { transform: translateY(1px); }
+.secondary { color: #555a63; background: #fff; border: 1px solid #dcdedb; }
+.secondary:hover { background: #f2f3f1; border-color: #c8cbc7; }
+.contentSection { margin-top: 30px; }.historySection { margin-top: 28px; }
+.historyTools { gap: 14px; }
+.searchBox { width: 185px; height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 9px; border: 1px solid #dedfdb; border-radius: 7px; background: #fff; color: #97999e; }
+.searchBox input { width: 100%; border: 0; outline: 0; color: #202124; background: transparent; font-size: 12px; }.searchBox:focus-within { border-color: #9bb4e7; box-shadow: 0 0 0 2px #e8eefb; }
+.textButton { color: var(--blue); font-size: 12px; text-decoration: none; }.textButton:hover { text-decoration: underline; }
+.historyList, .devices { margin-top: 14px; border-top: 1px solid var(--line); }
+.historyRow, .device { min-height: 58px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
+.historyRow { display: grid; grid-template-columns: 1fr auto; gap: 16px; }.historyPreview { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; }.historyMeta, .deviceMeta, .empty { color: var(--muted); font-size: 11px; margin-top: 5px; }
+.rowActions { display: flex; align-items: center; gap: 5px; opacity: 0; transition: opacity .12s ease; }.historyRow:hover .rowActions, .historyRow:focus-within .rowActions { opacity: 1; }
+.rowButton { border: 0; border-radius: 5px; background: transparent; color: #858991; padding: 5px 7px; font-size: 11px; }.rowButton:hover { background: #ecece8; color: #202124; }
+.device { justify-content: space-between; }.deviceName { font-size: 13px; font-weight: 600; }.deviceMeta { margin-top: 4px; }.deviceActions { gap: 10px; }.count { color: var(--muted); font-size: 11px; }.disconnect { border: 0; background: transparent; color: #a06464; padding: 6px; font-size: 11px; }.disconnect:hover { color: #7f3f3f; text-decoration: underline; }
+.empty { padding: 17px 2px; margin: 0; }.error { margin: 18px 0 0; color: #9b4e4e; font-size: 12px; }.hidden { display: none; }
+.footer { display: flex; justify-content: center; gap: 10px; color: #9a9c9f; font-size: 11px; margin-top: 34px; }.footerRule { width: 3px; height: 3px; margin-top: 5px; background: #c7c9c5; border-radius: 50%; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid #8eace3; outline-offset: 2px; }
+@media (max-width: 700px) { .shell { width: min(100% - 36px, 920px); padding-top: 22px; }.connectionPanel { align-items: flex-start; gap: 20px; }.historyTools { gap: 8px; }.searchBox { width: 145px; } }

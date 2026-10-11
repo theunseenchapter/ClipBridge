@@ -49,7 +49,9 @@ object Store {
     fun savePairing(c: Context, x: Pairing) = sp(c).edit().putString("peer_id", x.peerId).putString("peer_name", x.peerName)
         .putString("host", x.host).putInt("port", x.port).putString("fp", x.fp).putString("secret", enc(x.secret)).apply()
     fun saveHost(c: Context, host: String) = sp(c).edit().putString("host", host).apply()
-    fun unpair(c: Context) = sp(c).edit().remove("secret").apply()
+    fun unpair(c: Context) = sp(c).edit()
+        .remove("secret").remove("peer_id").remove("peer_name").remove("host").remove("port").remove("fp")
+        .apply()
 
     fun long(c: Context, k: String) = sp(c).getLong(k, 0)
     fun putLong(c: Context, k: String, v: Long) = sp(c).edit().putLong(k, v).apply()

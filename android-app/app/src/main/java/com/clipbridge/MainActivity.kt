@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.compose.material3.AlertDialog
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -61,6 +62,7 @@ class MainActivity : ComponentActivity() {
         val dao = App.instance.db.dao()
         var q by remember { mutableStateOf("") }
         var paused by remember { mutableStateOf(Store.isPaused(this)) }
+        var showDisconnect by remember { mutableStateOf(false) }
         val status by Engine.state.collectAsState()
         val clips by remember(q) { dao.search(q) }.collectAsState(emptyList())
         val scope = rememberCoroutineScope()
@@ -95,12 +97,20 @@ class MainActivity : ComponentActivity() {
                             onClick = { scan() },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(14.dp)
-                        ) { Text(if (status == "Connected") "Pair another" else "Pair phone") }
+                        ) { Text(if (status.startsWith("Connected")) "Pair another" else "Pair phone") }
                         OutlinedButton(
                             onClick = { scope.launch { dao.clear() } },
                             shape = RoundedCornerShape(14.dp)
                         ) { Text("Clear") }
                     }
+                }
+                item {
+                    OutlinedButton(
+                        onClick = { showDisconnect = true },
+                        enabled = status.startsWith("Connected") || Store.pairing(this@MainActivity) != null,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp)
+                    ) { Text("Disconnect phone") }
                 }
                 item {
                     OutlinedTextField(
@@ -127,12 +137,26 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+            if (showDisconnect) {
+                AlertDialog(
+                    onDismissRequest = { showDisconnect = false },
+                    title = { Text("Disconnect phone?") },
+                    text = { Text("This removes the pairing from this phone. You will need to scan a new QR code to reconnect.") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            Engine.disconnect(this@MainActivity)
+                            showDisconnect = false
+                        }) { Text("Disconnect") }
+                    },
+                    dismissButton = { TextButton(onClick = { showDisconnect = false }) { Text("Cancel") } }
+                )
+            }
         }
     }
 
     @Composable
     private fun StatusCard(status: String, paused: Boolean) {
-        val connected = status == "Connected"
+        val connected = status.startsWith("Connected")
         val accent = if (connected) Color(0xFF49D17D) else Color(0xFFFFB454)
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),

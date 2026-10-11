@@ -39,16 +39,17 @@ if (-not $javaVersion.StartsWith("17.")) {
     throw "ClipBridge requires JDK 17. The active Java version is '$javaVersion'. Set JAVA_HOME and PATH to JDK 17, then retry."
 }
 
-$adb = Get-Command adb -ErrorAction SilentlyContinue
-if (-not $adb) {
-    throw "adb was not found. Install Android SDK Platform-Tools and add its folder to PATH."
-}
-
 $sdkRoot = $env:ANDROID_HOME
 if (-not $sdkRoot) {
-    $adbRoot = Split-Path (Split-Path $adb.Source -Parent) -Parent
-    if (Test-Path (Join-Path $adbRoot "platforms\android-34")) {
-        $sdkRoot = $adbRoot
+    $sdkRoot = $env:ANDROID_SDK_ROOT
+}
+if (-not $sdkRoot) {
+    $adb = Get-Command adb -ErrorAction SilentlyContinue
+    if ($adb) {
+        $adbRoot = Split-Path (Split-Path $adb.Source -Parent) -Parent
+        if (Test-Path (Join-Path $adbRoot "platforms\android-34")) {
+            $sdkRoot = $adbRoot
+        }
     }
 }
 if (-not $sdkRoot -or -not (Test-Path (Join-Path $sdkRoot "platforms\android-34"))) {
@@ -81,6 +82,11 @@ try {
     if ($BuildOnly) {
         Write-Output "APK created at android-app\app\build\outputs\apk\debug\app-debug.apk"
         exit 0
+    }
+
+    $adb = Get-Command adb -ErrorAction SilentlyContinue
+    if (-not $adb) {
+        throw "adb was not found. Use -BuildOnly to build an APK without a USB-connected phone."
     }
 
     & adb start-server

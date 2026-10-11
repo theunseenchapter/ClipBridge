@@ -37,6 +37,14 @@ object Engine {
     fun start(c: Context) { if (job?.isActive == true) return; job = scope.launch { loop(c.applicationContext) } }
     fun stop() { job?.cancel(); state.value = "Stopped" }
 
+    fun disconnect(c: Context) {
+        Store.unpair(c)
+        out = null
+        job?.cancel()
+        job = null
+        state.value = "Not paired"
+    }
+
     // ---- TLS with certificate pinning (fingerprint comes from the QR code)
     private fun socket(host: String, port: Int, fp: String): SSLSocket {
         val tm = object : X509TrustManager {

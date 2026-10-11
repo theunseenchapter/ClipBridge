@@ -206,6 +206,10 @@ class SyncEngine:
 
     def revoke(self, dev: str) -> None:
         self.devices.revoke(dev)
+        writer = self.peers.pop(dev, None)
+        if writer:
+            writer.close()
+        self.on_status(len(self.peers))
         w = self.peers.get(dev)
         if w and self.loop:
             self.loop.call_soon_threadsafe(w.close)

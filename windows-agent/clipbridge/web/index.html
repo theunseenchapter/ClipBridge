@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClipBridge</title>
+  <link rel="stylesheet" href="/dashboard/styles.css?v=3">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brandMark" aria-hidden="true"><span></span><span></span></div>
+        <h1>ClipBridge</h1>
+      </div>
+      <div class="topbarRight">
+        <div id="statusPill" class="statusText waiting"><span></span><strong>Waiting for phone</strong></div>
+        <button id="settings" class="iconButton" title="Open history window" aria-label="Open history window">•••</button>
+      </div>
+    </header>
+    <section class="connectionPanel">
+      <div>
+        <p class="sectionLabel">Your devices</p>
+        <h2 id="heroTitle">No phone connected</h2>
+        <p id="heroText">Connect your Android phone to sync your clipboard.</p>
+      </div>
+      <div class="connectionActions">
+        <span class="phoneOutline" aria-hidden="true"></span>
+        <button id="pair" class="primary">Pair device</button>
+      </div>
+    </section>
+    <p id="error" class="error hidden"></p>
+    <section class="contentSection historySection">
+      <div class="sectionHeading">
+        <div><p class="sectionLabel">Clipboard history</p><h3>Recent activity</h3></div>
+        <div class="historyTools">
+          <label class="searchBox"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search history" aria-label="Search history"></label>
+          <a id="viewAll" href="#" class="textButton">View all</a>
+        </div>
+      </div>
+      <div id="history" class="historyList"><p class="empty">No clipboard activity yet.</p></div>
+    </section>
+    <section class="contentSection devicesSection">
+      <div class="sectionHeading">
+        <div><p class="sectionLabel">Devices</p><h3>Paired phones</h3></div>
+        <div class="deviceActions"><span id="count" class="count">0 devices</span><button id="pause" class="secondary">Pause sync</button></div>
+      </div>
+      <div id="devices" class="devices"><p class="empty">No paired phones.</p></div>
+    </section>
+    <footer class="footer"><span>ClipBridge runs locally on this PC.</span><span class="footerRule"></span><span>Your clipboard stays private.</span></footer>
+  </main>
+  <script src="/dashboard/app.js"></script>
+</body>
+</html>
